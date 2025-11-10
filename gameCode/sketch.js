@@ -27,6 +27,7 @@ var isContactE;
 var die;
 var lives;
 var bgmPlaying;
+var gameStarted;
 
 var cameraPosX;
 var game_score;
@@ -60,6 +61,8 @@ function setup()
 	createCanvas(1024, 576);
     floorPos_y = height*3/4;
 	
+    gameStarted = false;
+
     lives = 3;
 
     bgmPlaying = 0;
@@ -99,9 +102,9 @@ function startGame()
     platforms.push(createPlatforms(1800,floorPos_y-80,120));
     platforms.push(createPlatforms(-1000,floorPos_y-80,120));
     enemies = [];
-    enemies.push(new Enemy(300,floorPos_y-40,50));
-    enemies.push(new Enemy(800,floorPos_y-40,50));
-    enemies.push(new Enemy(1450,floorPos_y-40,50));
+    enemies.push(new Enemy(250,floorPos_y-40,50));
+    enemies.push(new Enemy(750,floorPos_y-40,50));
+    enemies.push(new Enemy(1400,floorPos_y-40,50));
     enemies.push(new Enemy(-300,floorPos_y-40,50));
     enemies.push(new Enemy(-1200,floorPos_y-40,50));
 // {} - is for objects
@@ -473,6 +476,9 @@ function draw()
     
     pop();
 
+    //the menu on screen
+    gameMenu();
+
     //the score on screen
     gameScore();
 
@@ -541,6 +547,10 @@ function draw()
 function keyPressed()
 {
     //console.log("keypressed is running")
+    if(!gameStarted && (keyCode === 65 || keyCode === 68 || keyCode === 87))
+    {
+        gameStarted = true;
+    }
     //left arrow
     if(keyCode==65 && isPlummeting==false)
     //when its moving left + NOT falling -> isLeft=TRUE
@@ -820,6 +830,25 @@ function checkPlayerDie()
         }
 
         console.log("lives: ", lives);
+    }
+}
+
+function gameMenu()
+{
+    if(!gameStarted)
+    {
+        push(); //so the other texts("score" & "lives") will NOT change its alignment
+        fill(0);
+        noStroke();
+        textAlign(CENTER,CENTER);
+        textSize(20);
+        text("To play:",width/2,height/7);
+        text("Press: W,A,D",width/2,height/7*1.5);
+        text("To win:",width/2,height/7*2);
+        text("1. Collect 6 ALL the leaves, to open the door of the mushroom house",width/2,height/7*2.5);
+        text("2. Go to the mushroom house.",width/2,height/7*3);
+        text("Try to avoid dropping into the canyon and the wolves.",width/2,height/7*3.5);
+        pop();
     }
 }
 
